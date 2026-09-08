@@ -225,30 +225,35 @@ document.addEventListener('DOMContentLoaded', () => {
       const isGoogleScript = (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== '');
       const targetUrl = isGoogleScript ? GOOGLE_SCRIPT_URL.trim() : (API_BASE + '/api/feedback');
 
-      let response, result;
-
       if (isGoogleScript) {
-        // Google Apps Script requires text/plain to avoid CORS preflight issues
-        response = await fetch(targetUrl, {
+        // Use no-cors mode for Google Apps Script to ensure cross-origin POST succeeds on GitHub Pages without CORS blocking
+        await fetch(targetUrl, {
           method: 'POST',
+          mode: 'no-cors',
           headers: {
             'Content-Type': 'text/plain;charset=utf-8'
           },
           body: JSON.stringify(payload)
         });
-        result = await response.json().catch(() => ({ success: true }));
-      } else {
-        response = await fetch(targetUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-        result = await response.json().catch(() => ({}));
+
+        // Show Polished Success Screen
+        feedbackForm.style.display = 'none';
+        successOverlay.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
       }
 
-      if ((response.ok && result.success) || (isGoogleScript && response.ok)) {
+      const response = await fetch(targetUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (response.ok && result.success) {
         // Show Polished Success Screen
         feedbackForm.style.display = 'none';
         successOverlay.style.display = 'block';
@@ -260,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
       console.error('Submission error:', err);
       if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== '') {
-        errorBox.textContent = 'Unable to connect to Google Sheets Cloud backend. Please check your internet connection or Google Script Web App deployment URL.';
+        errorBox.textContent = 'Unable to connect to Google Sheets Cloud backend. Please check your internet connection.';
       } else {
         const hostUrl = API_BASE || 'http://localhost:3000';
         errorBox.textContent = `Unable to connect to SDS NEXT server at ${hostUrl}. Please ensure "npm start" is running or set GOOGLE_SCRIPT_URL in app.js for GitHub Pages.`;
@@ -312,6 +317,22 @@ document.addEventListener('DOMContentLoaded', () => {
     adminPasswordSetupView.style.display = 'none';
     adminLoginView.style.display = 'none';
     adminDashboardView.style.display = 'none';
+
+    // Cloud Mode (GitHub Pages) check
+    if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== '') {
+      adminDashboardView.style.display = 'block';
+      if (statTotalResponses) statTotalResponses.textContent = 'Cloud';
+      if (statAvgOverall) statAvgOverall.textContent = 'Google';
+      if (statAvgTrainer) statAvgTrainer.textContent = 'Sheet';
+      
+      const adminNoticeMsg = document.getElementById('adminNoticeMsg');
+      if (adminNoticeMsg) {
+        adminNoticeMsg.innerHTML = '✓ Running in <b>Cloud Mode (GitHub Pages)</b>.<br>All responses are recorded live inside your connected Google Sheet.';
+        adminNoticeMsg.className = 'admin-notice-msg success';
+        adminNoticeMsg.style.display = 'block';
+      }
+      return;
+    }
 
     try {
       const res = await fetch(API_BASE + '/api/admin/status', {
@@ -413,8 +434,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const clearResponsesBtn = document.getElementById('clearResponsesBtn');
   const adminNoticeMsg = document.getElementById('adminNoticeMsg');
 
-  // Trigger Excel File Download
+  // Trigger Excel File Download / Google Sheet View
   downloadExcelBtn.addEventListener('click', () => {
+    if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== '') {
+      window.open('https://docs.google.com/spreadsheets/d/1c1oAAD37EmY9KPmDahW8-G3QOwQRDIlpoKqibDk4Xt0/edit?usp=sharing', '_blank');
+      return;
+    }
     if (!adminToken) return;
     // Download via token query parameter
     window.location.href = API_BASE + `/api/admin/download?token=${encodeURIComponent(adminToken)}`;
