@@ -1,0 +1,14 @@
+{
+  "name": "sds-next-training-feedback",
+  "version": "1.0.0",
+  "description": "SDS NEXT Training Evaluation Feedback System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.0.1",
+    "xlsx": "^0.18.5"
+  }
+}

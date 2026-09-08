@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDS NEXT - Professional Training Evaluation System</title>
+  <meta name="description" content="Official Training Evaluation Feedback System for SDS NEXT rollout sessions.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="assets/SDS-NEXT-Logo.svg">
+</head>
+<body>
+
+  <!-- Site Navigation Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#" class="brand-wrapper" aria-label="SDS NEXT Home">
+        <img src="assets/SDS-NEXT-Logo.svg" alt="SDS NEXT Logo" class="brand-logo-img">
+        <div class="brand-divider"></div>
+        <span class="header-tagline">TRAINING EVALUATION · 01</span>
+      </a>
+
+      <!-- Admin Portal Trigger Button -->
+      <button id="adminPortalBtn" class="admin-nav-btn" aria-label="Admin Download Portal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        Admin Console
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="hero-section">
+    <div class="hero-bg-shapes">
+      <div class="hero-glow-circle"></div>
+    </div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-pill">YOUR VOICE HELPS US IMPROVE</div>
+        <h1 class="hero-title">
+          How was your <br>
+          <span>SDS NEXT training?</span>
+        </h1>
+        <p class="hero-subtitle">
+          Your feedback helps us make each system rollout clearer, more practical and more useful for distributor teams.
+        </p>
+      </div>
+
+      <!-- Creative Circular Feedback Indicator -->
+      <div class="hero-circular-badge">
+        <span class="badge-top">YOUR</span>
+        <span class="badge-number">01</span>
+        <span class="badge-bottom">FEEDBACK<br>MATTERS</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Layout Grid -->
+  <main class="main-wrapper">
+    <div class="layout-grid">
+      
+      <!-- Progress Check-in Panel -->
+      <aside class="progress-panel">
+        <div class="panel-header-sub">A SHORT CHECK-IN</div>
+        <h2 class="panel-header-title">Help shape<br>the next session.</h2>
+        
+        <div class="step-tracker">
+          <div class="step-item active" id="stepIndicator1">
+            <div class="step-number">01</div>
+            <div class="step-label">Your training experience</div>
+          </div>
+          <div class="step-item" id="stepIndicator2">
+            <div class="step-number">02</div>
+            <div class="step-label">SOP and training quality</div>
+          </div>
+          <div class="step-item" id="stepIndicator3">
+            <div class="step-number">03</div>
+            <div class="step-label">Your comments</div>
+          </div>
+        </div>
+
+        <div class="panel-footer-est">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          Estimated time: 3 minutes
+        </div>
+      </aside>
+
+      <!-- Feedback Form Card -->
+      <section class="form-card">
+        <div class="form-card-header">
+          <div>
+            <h2 class="form-card-title">ANONYMOUS TRAINING FEEDBACK</h2>
+            <p class="form-card-subtitle">Fields marked <span class="required-star">*</span> are required.</p>
+          </div>
+        </div>
+
+        <!-- Anonymous Information Guarantee Banner -->
+        <div class="anonymous-badge-container">
+          <div class="anonymous-icon">✓</div>
+          <div>
+            <div class="anonymous-text-title">Your feedback is anonymous.</div>
+            <div class="anonymous-text-body">
+              We do not request your name, email address, distributor point, or any identifying information.
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Form Container -->
+        <form id="feedbackForm" novalidate>
+          
+          <!-- SECTION 01 – Your Training Experience -->
+          <div class="form-section" id="section1">
+            <div class="section-badge-header">
+              <span class="section-num">01</span>
+              <h3 class="section-title">Your Training Experience</h3>
+            </div>
+
+            <!-- Question 01: Training Date -->
+            <div class="form-group">
+              <label for="trainingDate" class="form-label">
+                01. Training date <span class="required-star">*</span>
+              </label>
+              <input type="date" id="trainingDate" name="trainingDate" class="form-input" required>
+            </div>
+
+            <!-- Question 02: Overall Training Experience -->
+            <div class="form-group">
+              <label class="form-label">
+                02. Overall training experience <span class="required-star">*</span>
+              </label>
+              <div class="rating-group" id="overallRatingGroup">
+                <div class="rating-btn" data-value="5 - Excellent" tabindex="0">
+                  <span class="rating-num">5</span>
+                  <span class="rating-label">Excellent</span>
+                </div>
+                <div class="rating-btn" data-value="4 - Very Good" tabindex="0">
+                  <span class="rating-num">4</span>
+                  <span class="rating-label">Very Good</span>
+                </div>
+                <div class="rating-btn" data-value="3 - Good" tabindex="0">
+                  <span class="rating-num">3</span>
+                  <span class="rating-label">Good</span>
+                </div>
+                <div class="rating-btn" data-value="2 - Fair" tabindex="0">
+                  <span class="rating-num">2</span>
+                  <span class="rating-label">Fair</span>
+                </div>
+                <div class="rating-btn" data-value="1 - Needs Improvement" tabindex="0">
+                  <span class="rating-num">1</span>
+                  <span class="rating-label">Needs Improvement</span>
+                </div>
+              </div>
+              <input type="hidden" id="overallRating" name="overallRating" required>
+            </div>
+
+            <!-- Question 03: Trainer's Clarity and Delivery -->
+            <div class="form-group">
+              <label class="form-label">
+                03. Trainer's clarity and delivery <span class="required-star">*</span>
+              </label>
+              <div class="rating-group" id="trainerRatingGroup">
+                <div class="rating-btn" data-value="5 - Excellent" tabindex="0">
+                  <span class="rating-num">5</span>
+                  <span class="rating-label">Excellent</span>
+                </div>
+                <div class="rating-btn" data-value="4 - Very Good" tabindex="0">
+                  <span class="rating-num">4</span>
+                  <span class="rating-label">Very Good</span>
+                </div>
+                <div class="rating-btn" data-value="3 - Good" tabindex="0">
+                  <span class="rating-num">3</span>
+                  <span class="rating-label">Good</span>
+                </div>
+                <div class="rating-btn" data-value="2 - Fair" tabindex="0">
+                  <span class="rating-num">2</span>
+                  <span class="rating-label">Fair</span>
+                </div>
+                <div class="rating-btn" data-value="1 - Needs Improvement" tabindex="0">
+                  <span class="rating-num">1</span>
+                  <span class="rating-label">Needs Improvement</span>
+                </div>
+              </div>
+              <input type="hidden" id="trainerRating" name="trainerRating" required>
+            </div>
+          </div>
+
+          <!-- SECTION 02 – SOP and Training Quality -->
+          <div class="form-section" id="section2">
+            <div class="section-badge-header">
+              <span class="section-num">02</span>
+              <h3 class="section-title">SOP and Training Quality</h3>
+            </div>
+
+            <!-- Question 04: SOP Clarity -->
+            <div class="form-group">
+              <label class="form-label">
+                04. How clear were the SOP workflows? <span class="required-star">*</span>
+              </label>
+              <div class="choice-grid" id="sopClarityGroup">
+                <div class="choice-card" data-value="Very clear" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Very clear</span>
+                </div>
+                <div class="choice-card" data-value="Clear" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Clear</span>
+                </div>
+                <div class="choice-card" data-value="Partly clear" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Partly clear</span>
+                </div>
+                <div class="choice-card" data-value="Not clear" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Not clear</span>
+                </div>
+              </div>
+              <input type="hidden" id="sopClarity" name="sopClarity" required>
+            </div>
+
+            <!-- Question 05: Confidence Using SDS NEXT -->
+            <div class="form-group">
+              <label class="form-label">
+                05. How confident are you using SDS NEXT now? <span class="required-star">*</span>
+              </label>
+              <div class="choice-grid" id="systemConfidenceGroup">
+                <div class="choice-card" data-value="Very confident" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Very confident</span>
+                </div>
+                <div class="choice-card" data-value="Confident" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Confident</span>
+                </div>
+                <div class="choice-card" data-value="Need more practice" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Need more practice</span>
+                </div>
+                <div class="choice-card" data-value="Need additional support" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Need additional support</span>
+                </div>
+              </div>
+              <input type="hidden" id="systemConfidence" name="systemConfidence" required>
+            </div>
+
+            <!-- Question 06: Most Useful Topic -->
+            <div class="form-group">
+              <label class="form-label">
+                06. Most useful topic <span class="required-star">*</span>
+              </label>
+              <div class="choice-grid" id="mostUsefulTopicGroup">
+                <div class="choice-card" data-value="Goods Receipt Note (GRN)" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Goods Receipt Note (GRN)</span>
+                </div>
+                <div class="choice-card" data-value="Purchase Return" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Purchase Return</span>
+                </div>
+                <div class="choice-card" data-value="Manual Billing" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Manual Billing</span>
+                </div>
+                <div class="choice-card" data-value="Order Booking" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Order Booking</span>
+                </div>
+                <div class="choice-card" data-value="Order to Billing (O2B)" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Order to Billing (O2B)</span>
+                </div>
+                <div class="choice-card" data-value="Stock Adjustment" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Stock Adjustment</span>
+                </div>
+                <div class="choice-card" data-value="Retailer Master" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Retailer Master</span>
+                </div>
+                <div class="choice-card" data-value="Product & Price (XDM)" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Product & Price (XDM)</span>
+                </div>
+              </div>
+              <input type="hidden" id="mostUsefulTopic" name="mostUsefulTopic" required>
+            </div>
+
+            <!-- Question 07: Follow-up Session Requirement -->
+            <div class="form-group">
+              <label class="form-label">
+                07. Would you like a follow-up session? <span class="required-star">*</span>
+              </label>
+              <div class="choice-grid" id="followUpGroup">
+                <div class="choice-card" data-value="No, I am ready to proceed" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">No, I am ready to proceed</span>
+                </div>
+                <div class="choice-card" data-value="Yes, a refresher session" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Yes, a refresher session</span>
+                </div>
+                <div class="choice-card" data-value="Yes, one-to-one support" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">Yes, one-to-one support</span>
+                </div>
+              </div>
+              <input type="hidden" id="followUp" name="followUp" required>
+            </div>
+
+            <!-- Question 08: Hands-on System Practice -->
+            <div class="form-group">
+              <label class="form-label">
+                08. Was enough time given for hands-on system practice? <span class="required-star">*</span>
+              </label>
+              <div class="choice-grid" id="handsOnPracticeGroup">
+                <div class="choice-card" data-value="5 - Definitely enough time" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">5 - Definitely enough time</span>
+                </div>
+                <div class="choice-card" data-value="4 - Enough time" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">4 - Enough time</span>
+                </div>
+                <div class="choice-card" data-value="3 - Some more time needed" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">3 - Some more time needed</span>
+                </div>
+                <div class="choice-card" data-value="2 - Not enough time" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">2 - Not enough time</span>
+                </div>
+                <div class="choice-card" data-value="1 - Much more time needed" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">1 - Much more time needed</span>
+                </div>
+              </div>
+              <input type="hidden" id="handsOnPractice" name="handsOnPractice" required>
+            </div>
+
+            <!-- Question 09: Training Relevance -->
+            <div class="form-group">
+              <label class="form-label">
+                09. How relevant were the training examples to your work? <span class="required-star">*</span>
+              </label>
+              <div class="choice-grid" id="trainingRelevanceGroup">
+                <div class="choice-card" data-value="5 - Extremely relevant" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">5 - Extremely relevant</span>
+                </div>
+                <div class="choice-card" data-value="4 - Relevant" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">4 - Relevant</span>
+                </div>
+                <div class="choice-card" data-value="3 - Somewhat relevant" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">3 - Somewhat relevant</span>
+                </div>
+                <div class="choice-card" data-value="2 - Slightly relevant" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">2 - Slightly relevant</span>
+                </div>
+                <div class="choice-card" data-value="1 - Not relevant" tabindex="0">
+                  <div class="choice-radio"></div>
+                  <span class="choice-text">1 - Not relevant</span>
+                </div>
+              </div>
+              <input type="hidden" id="trainingRelevance" name="trainingRelevance" required>
+            </div>
+          </div>
+
+          <!-- SECTION 03 – Your Comments -->
+          <div class="form-section" id="section3">
+            <div class="section-badge-header">
+              <span class="section-num">03</span>
+              <h3 class="section-title">Your Comments</h3>
+            </div>
+
+            <!-- Question 10: Additional Comments -->
+            <div class="form-group">
+              <label for="additionalComments" class="form-label">
+                10. What should we keep, improve or explain more clearly?
+              </label>
+              <textarea id="additionalComments" name="additionalComments" class="form-input form-textarea" placeholder="Provide any additional thoughts, suggestions, or topics you'd like us to elaborate on..."></textarea>
+            </div>
+          </div>
+
+          <!-- Error Alert Box -->
+          <div id="errorBox" class="error-box">
+            Unable to save feedback. Please check the connection and try again.
+          </div>
+
+          <!-- Submit Action Button -->
+          <div class="submit-wrapper">
+            <button type="submit" id="submitBtn" class="submit-btn">
+              <span id="btnSpinner" class="btn-spinner"></span>
+              <span id="btnText">Save anonymous feedback →</span>
+            </button>
+          </div>
+
+        </form>
+
+        <!-- Polished Success Confirmation Screen -->
+        <div id="successOverlay" class="success-overlay">
+          <div class="success-icon-wrap">✓</div>
+          <div class="hero-pill" style="margin-bottom: 0.5rem; background: var(--success-bg); border-color: rgba(16,185,129,0.3); color: var(--success);">
+            FEEDBACK RECEIVED
+          </div>
+          <h2 class="success-title">Thank you for helping us improve</h2>
+          <p class="success-sub">
+            Thank you for helping us improve the SDS NEXT training experience. Your anonymous response has been recorded.
+          </p>
+          <button id="submitAnotherBtn" class="success-reset-btn">
+            Submit another response
+          </button>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Admin Password Setup / Login / Download Modal -->
+  <div id="adminModal" class="modal-backdrop">
+    <div class="admin-modal">
+      <button id="closeAdminModalBtn" class="modal-close-btn" aria-label="Close modal">&times;</button>
+      
+      <div id="adminPasswordSetupView">
+        <h3 class="modal-title">Create Admin Password</h3>
+        <p class="modal-subtitle">Set up a security password to download the consolidated Excel feedback file.</p>
+        
+        <form id="adminSetupForm">
+          <div class="form-group">
+            <label for="newAdminPassword" class="form-label">Set Admin Password *</label>
+            <input type="password" id="newAdminPassword" class="form-input" placeholder="Minimum 4 characters" minlength="4" required>
+          </div>
+          <button type="submit" class="submit-btn" style="margin-top: 1rem;">
+            Save Password & Access Admin Portal
+          </button>
+        </form>
+      </div>
+
+      <div id="adminLoginView" style="display: none;">
+        <h3 class="modal-title">Admin Authentication</h3>
+        <p class="modal-subtitle">Enter your admin password to access analytics and download consolidated responses.</p>
+        
+        <form id="adminLoginForm">
+          <div class="form-group">
+            <label for="adminPasswordInput" class="form-label">Admin Password *</label>
+            <input type="password" id="adminPasswordInput" class="form-input" placeholder="Enter admin password" required>
+          </div>
+          <div id="adminLoginError" class="error-box" style="margin-bottom: 1rem;"></div>
+          <button type="submit" class="submit-btn">
+            Authenticate Admin
+          </button>
+        </form>
+      </div>
+
+      <div id="adminDashboardView" style="display: none;">
+        <h3 class="modal-title">Consolidated Feedback Download</h3>
+        <p class="modal-subtitle">Download the master Excel file (`SDS_NEXT_Training_Feedback.xlsx`) containing all responses.</p>
+        
+        <div class="admin-card-box">
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-val" id="statTotalResponses">0</div>
+              <div class="stat-lbl">Responses</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-val" id="statAvgOverall">0 / 5</div>
+              <div class="stat-lbl">Overall Avg</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-val" id="statAvgTrainer">0 / 5</div>
+              <div class="stat-lbl">Trainer Avg</div>
+            </div>
+          </div>
+
+          <button id="downloadExcelBtn" class="download-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Consolidated Excel (.xlsx)
+          </button>
+
+          <button id="clearResponsesBtn" class="clear-responses-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            Clear All Recorded Responses
+          </button>
+
+          <div id="adminNoticeMsg" class="admin-notice-msg"></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted);">
+          <span>Workbook Path: <code>data/SDS_NEXT_Training_Feedback.xlsx</code></span>
+          <button id="changeAdminPassBtn" style="background: none; border: none; color: var(--blue-primary); cursor: pointer; font-weight: 600;">
+            Change Password
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <p>© 2026 SDS NEXT. Internal Training & Operations Platform. All responses stored locally.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
