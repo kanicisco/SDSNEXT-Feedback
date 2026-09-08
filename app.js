@@ -37,9 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const statAvgTrainer = document.getElementById('statAvgTrainer');
 
   // ----------------------------------------------------
-  // Dynamic API Base URL Resolver
   // ----------------------------------------------------
-  // Resolves backend URL whether opened via http://localhost:3000, XAMPP http://localhost, file://, or LAN IP
+  // Dynamic API Base URL & Cloud Webhook Resolver
+  // ----------------------------------------------------
+  // Paste your Google Apps Script Web App URL below for 100% serverless GitHub Pages hosting.
+  // Example: 'https://script.google.com/macros/s/AKfycbx.../exec'
+  // Leave empty if using local Node.js (http://localhost:3000) or XAMPP Apache.
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLzTdEQBSexQQCm88urzBcIxNa8haL2lZpsrSw1rwoIxxAFOoY_d8Qf04rsHBHgggBsA/exec';
+
   function getApiBaseUrl() {
     const protocol = window.location.protocol;
     const hostname = window.location.hostname || 'localhost';
@@ -217,18 +222,33 @@ document.addEventListener('DOMContentLoaded', () => {
     btnText.textContent = 'Saving feedback…';
 
     try {
-      const targetUrl = API_BASE + '/api/feedback';
-      const response = await fetch(targetUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
+      const isGoogleScript = (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== '');
+      const targetUrl = isGoogleScript ? GOOGLE_SCRIPT_URL.trim() : (API_BASE + '/api/feedback');
 
-      const result = await response.json().catch(() => ({}));
+      let response, result;
 
-      if (response.ok && result.success) {
+      if (isGoogleScript) {
+        // Google Apps Script requires text/plain to avoid CORS preflight issues
+        response = await fetch(targetUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify(payload)
+        });
+        result = await response.json().catch(() => ({ success: true }));
+      } else {
+        response = await fetch(targetUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        result = await response.json().catch(() => ({}));
+      }
+
+      if ((response.ok && result.success) || (isGoogleScript && response.ok)) {
         // Show Polished Success Screen
         feedbackForm.style.display = 'none';
         successOverlay.style.display = 'block';
@@ -239,8 +259,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (err) {
       console.error('Submission error:', err);
-      const hostUrl = API_BASE || 'http://localhost:3000';
-      errorBox.textContent = `Unable to connect to SDS NEXT server at ${hostUrl}. Please ensure "npm start" is running.`;
+      if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== '') {
+        errorBox.textContent = 'Unable to connect to Google Sheets Cloud backend. Please check your internet connection or Google Script Web App deployment URL.';
+      } else {
+        const hostUrl = API_BASE || 'http://localhost:3000';
+        errorBox.textContent = `Unable to connect to SDS NEXT server at ${hostUrl}. Please ensure "npm start" is running or set GOOGLE_SCRIPT_URL in app.js for GitHub Pages.`;
+      }
       errorBox.style.display = 'block';
     } finally {
       // Re-enable button state
