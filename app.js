@@ -448,14 +448,38 @@ document.addEventListener('DOMContentLoaded', () => {
   // Clear All Responses Handler
   if (clearResponsesBtn) {
     clearResponsesBtn.addEventListener('click', async () => {
-      if (!adminToken) return;
-      const confirmed = confirm('Are you sure you want to clear all feedback responses? A timestamped backup of the current dataset will be created automatically in backups/.');
+      const isGoogleScript = (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== '');
+
+      const confirmed = confirm('Are you sure you want to clear all recorded feedback responses?');
       if (!confirmed) return;
 
       if (adminNoticeMsg) {
         adminNoticeMsg.className = 'admin-notice-msg';
         adminNoticeMsg.style.display = 'none';
       }
+
+      if (isGoogleScript) {
+        try {
+          await fetch(GOOGLE_SCRIPT_URL.trim(), {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'text/plain;charset=utf-8'
+            },
+            body: JSON.stringify({ action: 'clear' })
+          });
+          if (adminNoticeMsg) {
+            adminNoticeMsg.innerHTML = '✓ All feedback responses cleared from Google Sheet successfully.';
+            adminNoticeMsg.className = 'admin-notice-msg success';
+            adminNoticeMsg.style.display = 'block';
+          }
+        } catch (err) {
+          alert('Failed to clear responses from Google Sheet.');
+        }
+        return;
+      }
+
+      if (!adminToken) return;
 
       try {
         const res = await fetch(API_BASE + '/api/admin/clear-responses', {
