@@ -927,11 +927,15 @@ h1, h2, h3, h4, h5, .brand-font {
   font-size: 0.85rem;
 }
 
-/* Responsive Media Queries */
+/* ==========================================================================
+   Responsive Mobile & Tablet Design System
+   ========================================================================== */
+
 @media (max-width: 992px) {
   .hero-container {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 2rem;
   }
 
   .hero-content {
@@ -944,6 +948,7 @@ h1, h2, h3, h4, h5, .brand-font {
 
   .layout-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .progress-panel {
@@ -953,31 +958,166 @@ h1, h2, h3, h4, h5, .brand-font {
   .step-tracker {
     flex-direction: row;
     justify-content: space-between;
+    gap: 0.5rem;
   }
 
   .step-tracker::before {
     display: none;
   }
+
+  .step-item {
+    flex: 1;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.2rem;
+  }
 }
 
 @media (max-width: 640px) {
-  .hero-title {
-    font-size: 2rem;
+  .site-header {
+    padding: 0.75rem 1rem;
   }
 
+  .brand-divider, .header-tagline {
+    display: none;
+  }
+
+  .brand-logo-img {
+    height: 32px;
+  }
+
+  .admin-nav-btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .hero-section {
+    padding: 2.25rem 1rem 3rem 1rem;
+  }
+
+  .hero-badge {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.85rem;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+    line-height: 1.25;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .hero-circular-badge {
+    width: 105px;
+    height: 105px;
+  }
+
+  .layout-container {
+    padding: 1rem 0.75rem 3rem 0.75rem;
+  }
+
+  .form-card {
+    padding: 1.25rem 1rem;
+    border-radius: var(--radius-md);
+  }
+
+  .form-card-title {
+    font-size: 1.15rem;
+  }
+
+  .form-section-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-section-title {
+    font-size: 1.05rem;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* 1 to 5 Rating Buttons mobile optimization */
   .rating-group {
-    grid-template-columns: repeat(3, 1fr);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.35rem;
+  }
+
+  .rating-btn {
+    padding: 0.6rem 0.25rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    min-height: 46px;
+    border-radius: var(--radius-sm);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   .choice-grid {
     grid-template-columns: 1fr;
+    gap: 0.5rem;
   }
 
-  .form-card {
-    padding: 1.5rem;
+  .choice-card {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.875rem;
+    border-radius: var(--radius-sm);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .choice-radio {
+    width: 18px;
+    height: 18px;
+  }
+
+  .submit-btn {
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+  }
+
+  .admin-modal-content {
+    padding: 1.25rem 1rem;
+    width: 94%;
+    max-height: 90vh;
+    border-radius: var(--radius-lg);
+    overflow-y: auto;
+  }
+
+  .modal-title {
+    font-size: 1.35rem;
   }
 
   .stat-grid {
     grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .stat-card {
+    padding: 0.75rem;
+  }
+
+  .stat-val {
+    font-size: 1.25rem;
+  }
+
+  .download-btn, .clear-responses-btn {
+    padding: 0.85rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .rating-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.15rem;
+  }
+  
+  .hero-title {
+    font-size: 1.5rem;
   }
 }

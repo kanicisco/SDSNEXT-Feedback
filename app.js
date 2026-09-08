@@ -298,13 +298,36 @@ document.addEventListener('DOMContentLoaded', () => {
   // ----------------------------------------------------
   // Admin Portal & Password Management
   // ----------------------------------------------------
+  // Simple password hash helper for client-side password protection in Cloud Mode
+  function hashString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash |= 0;
+    }
+    return 'h_' + Math.abs(hash).toString(36);
+  }
+
   function openAdminModal() {
+    adminToken = '';
+    sessionStorage.removeItem('sds_admin_token');
+    if (adminPasswordInput) adminPasswordInput.value = '';
+    if (newAdminPassword) newAdminPassword.value = '';
+    if (adminLoginError) adminLoginError.style.display = 'none';
     adminModal.classList.add('open');
     checkAdminStatus();
   }
 
   function closeAdminModal() {
     adminModal.classList.remove('open');
+    adminToken = '';
+    sessionStorage.removeItem('sds_admin_token');
+    if (adminPasswordInput) adminPasswordInput.value = '';
+    if (newAdminPassword) newAdminPassword.value = '';
+    adminPasswordSetupView.style.display = 'none';
+    adminLoginView.style.display = 'none';
+    adminDashboardView.style.display = 'none';
   }
 
   adminPortalBtn.addEventListener('click', openAdminModal);
@@ -318,36 +341,25 @@ document.addEventListener('DOMContentLoaded', () => {
     adminLoginView.style.display = 'none';
     adminDashboardView.style.display = 'none';
 
-    // Cloud Mode (GitHub Pages) check
-    if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== '') {
-      adminDashboardView.style.display = 'block';
-      if (statTotalResponses) statTotalResponses.textContent = 'Cloud';
-      if (statAvgOverall) statAvgOverall.textContent = 'Google';
-      if (statAvgTrainer) statAvgTrainer.textContent = 'Sheet';
-      
-      const adminNoticeMsg = document.getElementById('adminNoticeMsg');
-      if (adminNoticeMsg) {
-        adminNoticeMsg.innerHTML = '✓ Running in <b>Cloud Mode (GitHub Pages)</b>.<br>All responses are recorded live inside your connected Google Sheet.';
-        adminNoticeMsg.className = 'admin-notice-msg success';
-        adminNoticeMsg.style.display = 'block';
+    const isCloud = (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== '') || window.location.hostname.includes('github.io');
+
+    if (isCloud) {
+      const storedCloudPass = localStorage.getItem('sds_cloud_admin_pass');
+      if (!storedCloudPass) {
+        adminPasswordSetupView.style.display = 'block';
+      } else {
+        adminLoginView.style.display = 'block';
       }
       return;
     }
 
     try {
-      const res = await fetch(API_BASE + '/api/admin/status', {
-        headers: adminToken ? { 'Authorization': `Bearer ${adminToken}` } : {}
-      });
+      const res = await fetch(API_BASE + '/api/admin/status');
       const data = await res.json();
 
       if (!data.isConfigured) {
-        // Password not set yet -> show password creation form
         adminPasswordSetupView.style.display = 'block';
-      } else if (data.isLoggedIn) {
-        // Already authenticated -> load stats and show download dashboard
-        await loadAdminDashboard();
       } else {
-        // Password exists, but user needs to login
         adminLoginView.style.display = 'block';
       }
     } catch (e) {
@@ -362,6 +374,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const pass = newAdminPassword.value.trim();
     if (pass.length < 4) return;
 
+    const isCloud = (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== '') || window.location.hostname.includes('github.io');
+
+    if (isCloud) {
+      localStorage.setItem('sds_cloud_admin_pass', hashString(pass));
+      newAdminPassword.value = '';
+      await loadAdminDashboard();
+      return;
+    }
+
     try {
       const res = await fetch(API_BASE + '/api/admin/setup-password', {
         method: 'POST',
@@ -371,7 +392,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       if (res.ok && data.success) {
         adminToken = data.token;
-        sessionStorage.setItem('sds_admin_token', adminToken);
         await loadAdminDashboard();
       } else {
         alert(data.message || 'Failed to set admin password.');
@@ -384,8 +404,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // Admin Login
   adminLoginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    adminLoginError.style.display = 'none';
-    const pass = adminPasswordInput.value;
+    if (adminLoginError) adminLoginError.style.display = 'none';
+    const pass = adminPasswordInput.value.trim();
+
+    const isCloud = (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== '') || window.location.hostname.includes('github.io');
+
+    if (isCloud) {
+      const storedCloudPass = localStorage.getItem('sds_cloud_admin_pass');
+      if (storedCloudPass && hashString(pass) === storedCloudPass) {
+        adminPasswordInput.value = '';
+        await loadAdminDashboard();
+      } else {
+        adminLoginError.textContent = 'Incorrect admin password.';
+        adminLoginError.style.display = 'block';
+      }
+      return;
+    }
 
     try {
       const res = await fetch(API_BASE + '/api/admin/login', {
@@ -396,7 +430,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       if (res.ok && data.success) {
         adminToken = data.token;
-        sessionStorage.setItem('sds_admin_token', adminToken);
         adminPasswordInput.value = '';
         await loadAdminDashboard();
       } else {

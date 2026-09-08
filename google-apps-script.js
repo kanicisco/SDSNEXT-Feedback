@@ -43,6 +43,19 @@ function doPost(e) {
       "Additional Comments"
     ]);
 
+    // Handle Clear All Responses Action
+    if (data && data.action === "clear") {
+      var maxRows = feedbackSheet.getLastRow();
+      if (maxRows > 1) {
+        feedbackSheet.getRange(2, 1, maxRows - 1, feedbackSheet.getLastColumn()).clearContent();
+      }
+      updateSummarySheet(ss, feedbackSheet);
+      return createJsonResponse({
+        success: true,
+        message: "All feedback responses cleared successfully."
+      });
+    }
+
     // Generate Submission ID and Timestamp
     var lastRow = feedbackSheet.getLastRow();
     var nextNum = lastRow > 1 ? lastRow - 1 + 1 : 1;
